@@ -1,0 +1,31 @@
+<div id="metricas-mvp" style="font-family: sans-serif; padding: 20px; border-radius: 12px; background: #0f172a; color: #fff; max-width: 380px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+    <h4 style="margin: 0;">Métricas de Validación</h4>
+    <button id="btn-refresh" onclick="recargarMetricas()" style="cursor: pointer; padding: 5px 10px; border-radius: 6px; background: #2563eb; color: #fff; border: none; font-weight: bold;">
+      🔄 Actualizar datos
+    </button>
+  </div>
+  <p style="margin: 6px 0;">Visitantes: <b id="val-visitantes" style="color: #38bdf8;">--</b></p>
+  <p style="margin: 6px 0;">Intención de Compra: <b id="val-compras" style="color: #4ade80;">--</b></p>
+  <p style="margin: 6px 0;">Tasa de Conversión: <b id="val-conv" style="color: #facc15;">--</b></p>
+</div>
+
+<script>
+  async function recargarMetricas() {
+    const btn = document.getElementById('btn-refresh');
+    btn.innerText = 'Cargando...';
+    try {
+      // Reemplaza con la URL de tu despliegue (ej. https://tudominio.com/api/metricas)
+      const res = await fetch('https://tu-dominio.com/api/metricas', { cache: 'no-store' });
+      const data = await res.json();
+      document.getElementById('val-visitantes').innerText = data.visitantes.toLocaleString();
+      document.getElementById('val-compras').innerText = data.intencion_compra.toLocaleString();
+      document.getElementById('val-conv').innerText = data.tasa_conversion || '0%';
+    } catch (err) {
+      console.error('Error:', err);
+    } finally {
+      btn.innerText = '🔄 Actualizar datos';
+    }
+  }
+  recargarMetricas();
+</script>
